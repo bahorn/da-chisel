@@ -7,7 +7,7 @@ from model import train
 
 def trainmodel():
     res = []
-    with Pool(cpu_count) as p:
+    with Pool(cpu_count()) as p:
         to_apply = p.imap(graph_step, range(NUM_GRAPHS))
         res = list(tqdm(to_apply, total=NUM_GRAPHS))
 
