@@ -80,7 +80,7 @@ def train(dataset_raw):
     dataset = []
     for graph, score in dataset_raw:
         data = from_networkx(graph, group_node_attrs=['threshold', 'degree'])
-        data.y = torch.tensor([score], dtype=torch.float32)
+        data.y = torch.tensor([[score]], dtype=torch.float32)
         dataset.append(data)
 
     train_count = int(len(dataset) * 0.8)
