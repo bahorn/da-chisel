@@ -9,7 +9,7 @@ from torch_geometric.nn import GCNConv
 from torch_geometric.nn import global_mean_pool
 from torch_geometric.loader import DataLoader
 from torch_geometric.utils import from_networkx
-from consts import BATCH_SIZE, EPOCHES, LR
+from consts import BATCH_SIZE, EPOCHES, LR, HIDDEN
 
 
 def get_device():
@@ -52,7 +52,7 @@ class GCNScorer:
     def __init__(self, path):
 
         self._device = get_device()
-        self._model = GCN(hidden_channels=512)
+        self._model = GCN(hidden_channels=HIDDEN)
         self._model.load_state_dict(torch.load(path, weights_only=True))
         self._model = self._model.to(self._device)
         self._model.eval()
@@ -70,7 +70,7 @@ class GCNScorer:
         for data in dl:
             data = data.to(self._device)
             out = self._model(data.x, data.edge_index, data.batch)
-            res += list(out.detach().to('cpu'))
+            res += list(out.detach().to('cpu').flatten().tolist())
         return res
 
 
@@ -98,7 +98,7 @@ def train(dataset_raw):
         test_dataset, batch_size=BATCH_SIZE, shuffle=False
     )
 
-    model = GCN(hidden_channels=512)
+    model = GCN(hidden_channels=HIDDEN)
     model = model.to(device)
 
     optimizer = torch.optim.Adam(model.parameters(), lr=LR)

@@ -12,6 +12,8 @@ algorithms try to "chisel" down by picking vertices and removing them.
 The learning goal here was to determine which paths are more likely to result in
 smaller alliances.
 
+Currently the model doesn't work well.
+
 ## License
 
 MIT

@@ -1,4 +1,5 @@
 model.pt
+training.dat
 *.pyc
 __pycache__
 .venv

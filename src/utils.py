@@ -1,4 +1,9 @@
 import random
+import networkx as nx
+
+
+def generate_graph():
+    return nx.gnp_random_graph(50, 0.15)
 
 
 def remove_one(vertex_list, remove):
