@@ -14,6 +14,22 @@ smaller alliances.
 
 Currently the model doesn't work well.
 
+## Usage
+
+```
+mkdir ./data
+# generate a bunch of graphs
+python3 src gen
+# Extract cases from them and find the optimal solution with cbc
+python3 src make ./data
+# train
+python3 src train
+# See if we are any better than random
+python3 src use
+```
+
+You can change various parameters in `src/consts.py`.
+
 ## License
 
 MIT
