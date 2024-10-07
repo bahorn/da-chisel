@@ -4,3 +4,5 @@ training.dat
 *.pyc
 __pycache__
 .venv
+tests
+data

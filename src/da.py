@@ -50,6 +50,12 @@ class ThresholdAllianceProblem:
     def node_count(self):
         return self._node_len
 
+    def graph(self):
+        return self._graph
+
+    def thresholds(self):
+        return self._thresholds
+
     def just_protected(self, subset):
         """
         Chisel away unprotected vertices from the subset.
@@ -76,17 +82,37 @@ class ThresholdAllianceProblem:
                 return False
         return True
 
-    def simplify(self, subset):
+    def reduce(self, subset):
+        """
+        Generate a smaller version of this problem with just the subset of
+        vertices involved.
+        """
+        g = self._graph.copy()
+        n = self._thresholds.copy()
+        to_remove = []
+        for node in g.nodes():
+            if node not in subset:
+                to_remove.append(node)
+                del n[node]
+        g.remove_nodes_from(to_remove)
+        return ThresholdAllianceProblem(g, n)
+
+    def simplify(self, subset=None):
         """
         Return a copy of the graph that only includes the subset of the
         vertices.
         """
         g = self._graph.copy()
+
         to_remove = []
-        for node in g.nodes():
-            if node not in subset:
-                to_remove.append(node)
-        g.remove_nodes_from(to_remove)
+
+        if subset is not None:
+            for node in g.nodes():
+                if node not in subset:
+                    to_remove.append(node)
+            g.remove_nodes_from(to_remove)
+        else:
+            subset = g.nodes()
         nx.set_node_attributes(
             g,
             {

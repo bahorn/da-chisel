@@ -1,26 +1,11 @@
 import sys
 from tqdm import tqdm
-from data import graph_step
+from data import build_graph_dataset, solve_graph
 from multiprocessing import Pool, cpu_count, set_start_method
-from consts import NUM_GRAPHS
 from model import train
 import pickle
 from compare import is_better
 from scipy.stats import binomtest
-
-
-def get_training():
-    res = []
-    with Pool(cpu_count()) as p:
-        to_apply = p.imap(graph_step, range(NUM_GRAPHS))
-        res = list(tqdm(to_apply, total=NUM_GRAPHS))
-
-    out = []
-    for r in res:
-        out += r
-
-    with open('training.dat', 'wb') as f:
-        pickle.dump(out, f)
 
 
 def trainmodel():
@@ -51,12 +36,14 @@ def use():
 
 def main():
     match sys.argv[1]:
+        case 'gen':
+            build_graph_dataset()
+        case 'make':
+            solve_graph(sys.argv[2])
         case 'use':
             use()
         case 'train':
             trainmodel()
-        case 'make':
-            get_training()
 
 
 if __name__ == "__main__":
