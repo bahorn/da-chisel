@@ -32,6 +32,7 @@ def score(p, subset):
 class ScoreBatch:
     def __init__(self):
         self._score_fun = score
+        self.use_max = False
 
     def score(self, p, subsets):
         return [self._score_fun(p, subset) for subset in subsets]
@@ -59,7 +60,7 @@ def core(p, subset, score_batch, logger=None):
 
     while len(next) != 0:
         # want to try and remove each vertex and see what subsets remain.
-        choices = chiseled_choices(p, next)
+        choices = list(chiseled_choices(p, next))
         if len(choices) == 0:
             break
 
@@ -73,8 +74,13 @@ def core(p, subset, score_batch, logger=None):
         # then with those we can score them
         scores = score_batch.score(p, choices)
 
-        # and then randomly chose based on softmax.
-        next = random.choices(list(choices), weights=softmax(scores), k=1)[0]
+        if score_batch.use_max:
+            max_index = choices.index(max(choices))
+            next = choices[max_index]
+        else:
+            # and then randomly chose based on softmax.
+            next = \
+                random.choices(choices, weights=softmax(scores), k=1)[0]
 
     return best
 

@@ -6,6 +6,7 @@ from model import train
 import pickle
 from compare import is_better
 from scipy.stats import binomtest
+from consts import SAMPLE_COUNT
 
 
 def trainmodel():
@@ -17,7 +18,7 @@ def trainmodel():
 def use():
     set_start_method('spawn')
     res = []
-    count = 256
+    count = SAMPLE_COUNT
     with Pool(cpu_count()) as p:
         to_apply = p.imap(is_better, range(count))
         res = list(tqdm(to_apply, total=count))

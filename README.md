@@ -13,6 +13,8 @@ The learning goal here was to determine which paths are more likely to result in
 smaller alliances.
 
 Currently the model doesn't work well.
+Main issue seems to be the scores learned for a given level tend to be far to
+similar with not enough distiction.
 
 ## Usage
 
